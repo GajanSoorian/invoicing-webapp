@@ -3,23 +3,42 @@ package httphandler
 import (
 	//"parallax-invoicing/models/invoicemodels"
 
+	"database/sql"
 	"fmt"
 	"net/http"
+	"time"
 
+	"github.com/GajanSoorian/parallax-invoicing/models"
 	"github.com/gin-gonic/gin"
+	"github.com/google/uuid"
 )
 
 //handler for endpoint: invoice-create
 
-func CreateInvoice() gin.HandlerFunc {
+func CreateInvoice(db *sql.DB) gin.HandlerFunc {
+	sqlStatement := `
+INSERT INTO invoices (id, customer_name, customer_email, created_on, updated_on)
+VALUES ($1, $2, $3, $4, $5)`
+	_, err := db.Exec(sqlStatement, 1, "GajanSoorian", "tes@gmail.com", time.Now(), time.Now())
+	if err != nil {
+		panic(err)
+	}
 	return func(c *gin.Context) {
+		c.JSON(http.StatusOK, populateInvoice())
 		fmt.Println("Invoice created")
-		c.JSON(http.StatusOK, map[string]string{
-			"Invoice ID": " 1",
-			"cost":       "500",
-		})
+
 	}
 
+}
+
+func populateInvoice() *models.Invoice {
+	invoice := models.NewInvoice()
+	// TODO: get these values from frontend
+	invoice.CustomerName = "Gajan Soorian"
+	invoice.CustomerEmail = "testmail@gmail.com"
+	invoice.Id = uuid.New()
+
+	return invoice
 }
 
 // postAlbums adds an album from JSON received in the request body.

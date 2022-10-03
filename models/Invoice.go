@@ -13,7 +13,7 @@ type Item struct {
 	Unit unitOfPrice `json:"unit"` //
 }
 
-//Model of Line item- representing item of same id with count .
+// Model of Line item- representing item of same id with count.
 type LineItem struct {
 	Id    uuid.UUID `json:"id"`    // Unique identifier for the line item.
 	Items Item      `json:"item"`  // Item in each line of the invoice.
@@ -21,7 +21,7 @@ type LineItem struct {
 	Cost  float64   `json:"cost"`  // Cost of the item multiplied by count.
 }
 
-// Model for an Order.
+// Model for an Order-> made up of multiple line items.
 type Order struct {
 	Id          uuid.UUID  `json:"id"`           // Unique identifier for this order.
 	LineItems   []LineItem `json:"line_items"`   // List of LineItems.
@@ -48,7 +48,7 @@ func (lineItem *LineItem) TotalCost() {
 	lineItem.Cost = lineItem.Items.Cost * float64(lineItem.Count)
 }
 
-func New() *Invoice {
+func NewInvoice() *Invoice {
 	return &Invoice{}
 }
 

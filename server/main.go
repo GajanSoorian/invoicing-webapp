@@ -1,41 +1,30 @@
 package main
 
 import (
-	"database/sql"
-	"fmt"
 	"log"
 
 	models "github.com/GajanSoorian/parallax-invoicing/models"
 	httphandler "github.com/GajanSoorian/parallax-invoicing/server/handlers/httphandler"
 
 	"github.com/gin-gonic/gin"
-	_ "github.com/lib/pq"
 )
 
 func main() {
 
-	db, err := sql.Open("postgres", "postgres://root:root@172.21.0.2/invoice_db?sslmode=disable")
+	db, err := models.SetupDatabase("postgres", "postgres://root:root@172.20.0.2/invoice_db?sslmode=disable")
 	if err != nil {
 		log.Fatal(err)
 	}
-	if err := db.Ping(); err != nil {
-		log.Fatal(err)
-	} else {
-		fmt.Println("Connected to database!!!!")
-	}
 	defer db.Close()
+
 	// Creates a gin router - gin is a micro-framework for RESTful
 	router := gin.Default()
 
+	router.POST("/invoice-create", httphandler.CreateInvoice(db))
 	// display-invoice is the endpoint.
 	// GetInvoiceById is the handler.
-	router.GET("/invoice-display", httphandler.GetInvoiceById())
+	router.GET("/invoice-display", httphandler.GetInvoiceById(db))
 
-	router.POST("/invoice-create", httphandler.CreateInvoice())
-
-	invoice := models.New()
-	invoice.CustomerName = "Gajan"
-	fmt.Println(invoice.CustomerName)
 	//router.PUT("/somePut", putting)
 	//router.DELETE("/invoice-display", deleting)
 	//router.PATCH("/somePatch", patching)
