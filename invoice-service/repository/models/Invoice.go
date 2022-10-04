@@ -9,8 +9,8 @@ import (
 // Model of an Item being purchased.
 type Item struct {
 	Id   uuid.UUID   `json:"id"`   // Unique identifier for the item.
-	Cost float64     `json:"cost"` // Cost for the item
-	Unit unitOfPrice `json:"unit"` //
+	Cost float64     `json:"cost"` // Cost for the item.
+	Unit unitOfPrice `json:"unit"` // Unit of cost.
 }
 
 // Model of Line item- representing item of same id with count.

@@ -1,6 +1,7 @@
-package httphandler
+package handlers
 
 import (
+	"database/sql"
 	"fmt"
 	"net/http"
 	"net/http/httptest"
@@ -10,7 +11,8 @@ import (
 )
 
 func TestGetInvoiceById(t *testing.T) {
-	invoiceRec := GetInvoiceById()
+	var db *sql.DB
+	invoiceRec := GetInvoiceById(db)
 	//assert.Equal(t, http.StatusOK, invoiceRec.)
 	fmt.Println("This is tested!!", invoiceRec)
 
@@ -40,11 +42,11 @@ func testHTTPResponse(t *testing.T, r *gin.Engine, req *http.Request, f func(w *
 // the HTTP code 200 for an unauthenticated user
 func TestShowIndexPageUnauthenticated(t *testing.T) {
 	router := getRouter()
-
-	router.GET("/invoice-display", GetInvoiceById())
+	var db *sql.DB
+	router.GET("/v1//invoice-display", GetInvoiceById(db))
 
 	// Create a request to send to the above route
-	req, _ := http.NewRequest("GET", "/invoice-display", nil)
+	req, _ := http.NewRequest("GET", "/v1//invoice-display", nil)
 
 	testHTTPResponse(t, router, req, func(w *httptest.ResponseRecorder) bool {
 		// Test that the http status code is 200
