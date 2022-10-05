@@ -8,6 +8,7 @@ import (
 	"github.com/GajanSoorian/parallax-invoicing/invoice-service/api/handlers"
 	"github.com/GajanSoorian/parallax-invoicing/invoice-service/internal/config"
 	"github.com/GajanSoorian/parallax-invoicing/invoice-service/repository"
+	"github.com/GajanSoorian/parallax-invoicing/invoice-service/repository/models"
 	"github.com/gin-gonic/gin"
 )
 
@@ -31,11 +32,13 @@ func main() {
 
 	// Creates a gin router - gin is a micro-framework for RESTful
 	router := gin.Default()
+	api := router.Group(env.ApiVersion)
+	{
+		api.GET("/ping", handlers.PingGet())
+		api.POST("/invoice-create", handlers.CreateInvoice(db, models.NewInvoice()))
 
-	router.POST("/v1/invoice-create", handlers.CreateInvoice(db))
-
-	router.GET("/v1//invoice-display", handlers.GetInvoiceById(db))
-
+		api.GET("/invoice-display/:id", handlers.GetInvoiceById(db))
+	}
 	router.Run(os.Getenv("SERVER_PORT"))
 }
 

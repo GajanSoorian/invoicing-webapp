@@ -41,6 +41,7 @@ Todo Now:
 
 - JWT authorization for rest endpoints.
 - Integration test cases with mocked Database.
+- Input validation for frontend.
 - create end points for gRPC
 - Dockerize everything
 - Create an analytics page to

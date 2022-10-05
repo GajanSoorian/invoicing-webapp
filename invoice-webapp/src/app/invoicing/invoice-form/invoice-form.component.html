@@ -1,0 +1,107 @@
+<p>
+  <mat-toolbar color="primary">
+    <span>Parallax Invoicing Web Application</span>
+  </mat-toolbar>
+</p>
+<footer class="fixed-bottom">
+  <div>
+      <h5>Welcome to the future of b2b payments!
+      </h5>
+  </div>
+</footer>
+
+<button mat-raised-button class="landing-page-buttons" color="primary" (click)="onCreateClick()">Create Invoice</button>
+<button mat-raised-button class="landing-page-buttons" color="primary" (click)="onViewClick()">View/Modify Invoice</button>
+
+<form class="invoice-form" #invoiceForm="ngForm">
+
+  <div>
+    <mat-form-field class="line-item-class" appearance="fill">
+      <mat-label>Invoice Number</mat-label>
+      <input matInput type="number" value="{{invoice.invoiceNumber}}" name="invoice-number" [readonly]=!isViewModifyMode>
+    </mat-form-field>
+    <button mat-raised-button class="" *ngIf="isViewModifyMode" color="primary" (click) = "onSearchClick()">Go</button>
+  </div>
+<div *ngIf="isCreateMode">
+  <div class="customer-info">
+    <h3>Customer Details</h3>
+    <mat-form-field class="line-item-class" appearance="standard">
+      <mat-label>Customer Name</mat-label>
+      <input matInput placeholder="" value="" [ngClass]="{'is-invalid': invoiceForm.submitted && CustomerName.invalid}"
+        [(ngModel)]="invoice.customerName" name ="customerName" #CustomerName="ngModel" required>
+    </mat-form-field>
+    <mat-form-field class="line-item-class" appearance="fill">
+      <mat-label>Email</mat-label>
+      <input matInput placeholder="Ex. user@gmail.com" value="" [(ngModel)]="invoice.email" name ="email" required>
+    </mat-form-field>
+  </div>
+  <div class="Order-info">
+    <h3> Order Details <button mat-raised-button class="line-item-add-buttons" color="accent" (click)="addProduct()"> +
+      </button>
+
+      <button mat-raised-button class="line-item-add-buttons" color="warn" (click)="removeProduct()"> - </button>
+    </h3>
+    <div class="row">
+      <table class="table">
+        <thead>
+          <tr>
+            <td width="25%" align="left">Product</td>
+            <td width="25%" align="left">Description</td>
+            <td width="25%" align="left">Amount</td>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let product of invoice.products; let i=index">
+            <td scope="row">
+              <mat-form-field class="line-item-class" appearance="fill">
+                <mat-label>Item Name</mat-label>
+                <input matInput value="" type="text" class="form-control" name="productName{{i}}"
+                  [ngClass]="{'is-invalid': invoiceForm.submitted && ProductName.invalid}" id="productName"
+                  [(ngModel)]="product.name" #ProductName="ngModel" required>
+              </mat-form-field>
+            </td>
+            <td>
+              <mat-form-field class="line-item-class" appearance="fill">
+                <mat-label>Description</mat-label>
+                <input matInput value="" class="amount-right-align" placeholder="Item Description" name="Description{{i}}" id="description" name ="description"
+                [(ngModel)]="product.description">
+              </mat-form-field>
+            </td>
+            <td>
+              <mat-form-field class="line-item-class" appearance="fill">
+                <mat-label>Amount</mat-label>
+                <input matInput type="number" class="amount-right-align" placeholder="0" name="price{{i}}" id="price" name ="price"
+                  [ngClass]="{'is-invalid': invoiceForm.submitted && ProductPrice.invalid}" [(ngModel)]="product.price"
+                  #ProductPrice="ngModel" required>
+                <span matPrefix> USDC  </span>
+              </mat-form-field>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div>
+    <mat-form-field class="line-item-class" appearance="fill">
+      <mat-label>Total Amount</mat-label>
+      <input matInput type="number" class="Total-amount" placeholder="0" name="TotalAmount" id="Total amount"
+        value = {{invoice.totalAmount}} [readonly]="true">
+      <span matPrefix>USDC</span>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Payment Due Date</mat-label>
+      <input matInput [matDatepicker]="picker2" [(ngModel)]="dueDate" name ="dueDate">
+      <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+      <mat-datepicker #picker2 color="primary"></mat-datepicker>
+      </mat-form-field>
+
+  </div>
+  <div>
+    <button mat-raised-button class="invoice-submit-button" color="primary" (click)="onSubmitClick()">Submit
+      Invoice</button>
+  </div>
+
+</div>
+
+</form>

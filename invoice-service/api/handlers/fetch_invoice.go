@@ -3,29 +3,22 @@ package handlers
 import (
 	"database/sql"
 	"fmt"
-	"log"
 	"net/http"
 	"time"
 
-	"github.com/GajanSoorian/parallax-invoicing/invoice-service/repository"
+	"github.com/GajanSoorian/parallax-invoicing/invoice-service/repository/models"
 	"github.com/gin-gonic/gin"
 )
 
 // Handler for endpoint invoice-display
 
 func GetInvoiceById(db *sql.DB) gin.HandlerFunc {
-	var (
-		id        int
-		name      string
-		email     string
-		createdOn time.Time
-		updatedOn time.Time
-	)
 
 	return func(c *gin.Context) {
+		id := c.Param("id")
 
-		fmt.Println("Calling FetchRows")
-		rows, err := repository.FetchRows(db)
+		fmt.Println("Calling FetchRows for id ", id)
+		/*rows, err := repository.FetchRows(db)
 		if err != nil {
 			log.Println(err)
 		}
@@ -41,10 +34,24 @@ func GetInvoiceById(db *sql.DB) gin.HandlerFunc {
 		err = rows.Err()
 		if err != nil {
 			log.Fatal(err)
-		}
+		} */
+		in := models.NewInvoice()
+		in.CustomerName = "god"
+		in.Email = "god@god.com"
+		in.DueDate = time.Now()
+		in.InvoiceNumber = 12345
+		in.Products = []models.Item{{"pen", "good pen", 12.3}, {"pencil", "good Pencil", 10}}
+		in.TotalAmount = 22
+
+		c.IndentedJSON(http.StatusOK, in)
+	}
+}
+
+func PingGet() gin.HandlerFunc {
+	return func(c *gin.Context) {
 		c.JSON(http.StatusOK, map[string]string{
-			"name":  name,
-			"email": email,
+			"name":  "Gajan",
+			"email": "My@gmail.com",
 		})
 	}
 }
