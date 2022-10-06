@@ -12,9 +12,11 @@ export class LandingPageComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  // Can be used to route to pages for create action. Not used at this time.
   onCreateClick(): void {
     this._router.navigateByUrl('/create');
   }
+   // Can be used to route to pages for view or modify actions. Not used at this time.
   onViewClick(): void {
 
   }

@@ -9,7 +9,8 @@ import (
 	_ "github.com/lib/pq"
 )
 
-func SetupDatabase(env *config.Config) (*sql.DB, error) {
+// Set up DB connection based on environment config
+func SetupDbConnection(env *config.Config) (*sql.DB, error) {
 	db, err := sql.Open(env.RepoDriver, BuildDbConnectionParam(env))
 	if err != nil {
 		return nil, err
@@ -34,6 +35,7 @@ func FetchRows(db *sql.DB) (*sql.Rows, error) {
 	return rows, err
 }
 
+// Util function to build DB connection string based on config parameters. 
 func BuildDbConnectionParam(env *config.Config) string {
 	if env == nil {
 		fmt.Println("env Config is nil, returning empty string")

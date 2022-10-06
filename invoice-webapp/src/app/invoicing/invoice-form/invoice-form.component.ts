@@ -1,5 +1,9 @@
 import { Component, OnInit, NgModule } from '@angular/core';
 import { InvoicingService } from '../service/invoicing.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import {FormGroup} from '@angular/forms';
+import { Observable, throwError } from 'rxjs';
+import { catchError } from 'rxjs/operators';
 
 @Component({
   selector: 'app-invoice-form',
@@ -20,13 +24,14 @@ export class InvoiceFormComponent implements OnInit {
 
   invoice = new Invoice();
   constructor(
-    private _invoicingService: InvoicingService
+    private _invoicingService: InvoicingService,
+    private _snackBar: MatSnackBar
   ) { }
 
   ngOnInit(): void {
   }
 
-  // Add line items + button
+  // Add line items to the invoice using the '+' button.
   addProduct() {
     this.invoice.products.push({
       name: this.name,
@@ -36,7 +41,7 @@ export class InvoiceFormComponent implements OnInit {
     this.invoice.totalAmount = (this.invoice.products.reduce((n, {price}) => n + price!, 0))
   }
 
-  // Remove line items - button
+  // Remove line items from the invoice with the '-' button.
   removeProduct() {
     this.invoice.products.pop();
     this.invoice.totalAmount = (this.invoice.products.reduce((n, {price}) => n + price!, 0))
@@ -50,6 +55,8 @@ export class InvoiceFormComponent implements OnInit {
     console.log("Need to sed this to the back end : ",this.invoice.dueByDate ,  this.invoice.customerName,
     this.invoice.email, this.invoice.invoiceNumber, this.invoice.products);
     this._invoicingService.addInvoice(this.invoice)
+    let message = `Invoice with number ${this.invoice.invoiceNumber} created successfully`
+    this.popupMessage(message, "Ok")
     //Todo : reset the form and component.
   }
 
@@ -78,6 +85,17 @@ export class InvoiceFormComponent implements OnInit {
       this.invoice = data;
     })
   }
+
+  popupMessage(message: string, action: string) {
+    this._snackBar.open(message, action);
+  }
+
+
+  handleError(err: any) {
+    this._snackBar.open(`Action Failed.`, 'Ok', { panelClass: 'warn' });
+    return new Error(err);
+  }
+
 }
 interface Item {
   name: string | undefined

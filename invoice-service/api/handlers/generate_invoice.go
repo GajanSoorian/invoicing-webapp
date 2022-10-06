@@ -33,7 +33,7 @@ func populateInvoice(db *sql.DB) *models.Invoice {
 	invoice := models.NewInvoice()
 	// TODO: get these values from frontend
 	invoice.CustomerName = "Gajan Soorian"
-	invoice.CustomerEmail = "testmail@gmail.com"
+	invoice.Email = "testmail@gmail.com"
 	//invoice.Id = uuid.New()
 	/*sqlStatement := `INSERT INTO invoices (id, customer_name, customer_email, created_on, updated_on)
 	VALUES ($1, $2, $3, $4, $5)`

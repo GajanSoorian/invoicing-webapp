@@ -12,7 +12,7 @@ import {MatDatepickerModule} from '@angular/material/datepicker';
 import { MatNativeDateModule, MatRippleModule } from '@angular/material/core';
 import {MatIconModule} from '@angular/material/icon';
 import { HttpClientModule } from '@angular/common/http';
-
+import {MatSnackBarModule} from '@angular/material/snack-bar';
 
 @NgModule({
   declarations: [
@@ -33,6 +33,7 @@ import { HttpClientModule } from '@angular/common/http';
     MatRippleModule,
     MatIconModule,
     HttpClientModule,
+    MatSnackBarModule,
    ],
   exports: [
     LandingPageComponent,

@@ -16,14 +16,14 @@ func getDefaultEnv() *config.Config {
 
 // Test behavior when DB driver is not supported.
 func TestSetupDatabaseDriverNotSupported(t *testing.T) {
-	_, err := SetupDatabase(getDefaultEnv())
+	_, err := SetupDbConnection(getDefaultEnv())
 	assert.NotNil(t, err)
 	fmt.Println(err)
 }
 
 // Test behavior when DB connect failed due to failed Ping test
 func TestSetupDatabaseFailedToConnect(t *testing.T) {
-	_, err := SetupDatabase(getDefaultEnv())
+	_, err := SetupDbConnection(getDefaultEnv())
 	assert.NotNil(t, err)
 	fmt.Println(err)
 }

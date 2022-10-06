@@ -3,15 +3,15 @@
     <span>Parallax Invoicing Web Application</span>
   </mat-toolbar>
 </p>
-<footer class="fixed-bottom">
+<footer class="fixed-top">
   <div>
       <h5>Welcome to the future of b2b payments!
       </h5>
   </div>
 </footer>
 
-<button mat-raised-button class="landing-page-buttons" color="primary" (click)="onCreateClick()">Create Invoice</button>
-<button mat-raised-button class="landing-page-buttons" color="primary" (click)="onViewClick()">View/Modify Invoice</button>
+<button mat-raised-button class="landing-page-buttons" color="primary" (click)="onCreateClick(); invoiceForm.reset()">Create Invoice</button>
+<button mat-raised-button class="landing-page-buttons" color="primary" (click)="onViewClick(); invoiceForm.reset()">View/Modify Invoice</button>
 
 <form class="invoice-form" #invoiceForm="ngForm">
 
@@ -91,7 +91,7 @@
 
     <mat-form-field>
       <mat-label>Payment Due Date</mat-label>
-      <input matInput [matDatepicker]="picker2" [(ngModel)]="dueDate" name ="dueDate">
+      <input matInput [matDatepicker]="picker2" [(ngModel)]="invoice.dueByDate" name ="dueDate">
       <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
       <mat-datepicker #picker2 color="primary"></mat-datepicker>
       </mat-form-field>
