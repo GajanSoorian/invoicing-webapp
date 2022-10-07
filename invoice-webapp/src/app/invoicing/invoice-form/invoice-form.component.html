@@ -10,7 +10,7 @@
   </div>
 </footer>
 
-<button class="create-button" mat-raised-button class="landing-page-buttons" color="primary" (click)="onCreateClick(); invoiceForm.reset()">Create Invoice</button>
+<button mat-raised-button class="landing-page-buttons button-create" color="primary" (click)="onCreateClick(); invoiceForm.reset()">Create Invoice</button>
 <button mat-raised-button class="landing-page-buttons" color="primary" (click)="onViewModifyClick(); invoiceForm.reset()">View/Modify Invoice</button>
 
 <form class="invoice-form" #invoiceForm="ngForm">
@@ -18,7 +18,7 @@
   <div>
     <mat-form-field class="line-item-class" appearance="fill">
       <mat-label>Invoice Number</mat-label>
-      <input matInput type="number" value="{{invoice.invoiceNumber}}" name="invoice-number" [readonly]=!isViewModifyMode>
+      <input matInput type="number" [(ngModel)]="invoiceNumberToFetch" name="invoice-number" value = {{invoice.invoiceNumber}} [readonly]=!isViewModifyMode>
     </mat-form-field>
     <button mat-raised-button class="" *ngIf="isViewModifyMode" color="primary" (click) = "onSearchClick()">Go</button>
   </div>

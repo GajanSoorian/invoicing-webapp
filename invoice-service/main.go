@@ -26,7 +26,6 @@ func main() {
 	if err != nil {
 		panic(err)
 	} else {
-		fmt.Println("Connected to database")
 	}*/
 
 	// Creates a gin router - gin is a micro-framework for RESTful

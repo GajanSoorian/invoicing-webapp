@@ -1,4 +1,4 @@
-import { Injectable, OnDestroy } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, Subscription } from 'rxjs';
 import { Invoice } from '../invoice-form/invoice-form.component';
@@ -7,15 +7,12 @@ import { Invoice } from '../invoice-form/invoice-form.component';
 @Injectable({
   providedIn: 'root'
 })
-export class InvoicingService implements OnDestroy{
+export class InvoicingService {
 
   invoice: Invoice;
 
   constructor(private _httpClient: HttpClient) {
     this.invoice = new Invoice();
-  }
-  ngOnDestroy(): void {
-    throw new Error('Method not implemented.');
   }
 
   // Implements HTTP POST to create a new or update an existing invoice.

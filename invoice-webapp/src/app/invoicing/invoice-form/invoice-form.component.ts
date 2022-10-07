@@ -52,7 +52,6 @@ export class InvoiceFormComponent {
 
   onCreateClick(): void {
     this.invoice = new Invoice();
-    this.invoice.invoiceNumber = (new Date).getTime()
     this.isCreateMode =true
     this.isViewModifyMode =false
 
@@ -63,7 +62,7 @@ export class InvoiceFormComponent {
       price: 0})
     this.invoice.totalAmount =0
     }
-
+    this.invoice.invoiceNumber = (new Date).getTime()
   }
 
   onProductPriceUpdate(): void {
@@ -79,9 +78,6 @@ export class InvoiceFormComponent {
   onSearchClick(): void {
     this.isCreateMode =true
     this.isViewModifyMode =false
-    this.invoiceNumberToFetch = this.invoice.invoiceNumber!
-    console.log("This is invoice being sent to the backend",this.invoice.invoiceNumber);
-
     this._invoicingService.getInvoice(this.invoiceNumberToFetch).subscribe (data => {
       this.invoice = data;
     })

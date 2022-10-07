@@ -2,8 +2,8 @@ package handlers
 
 import (
 	"database/sql"
-	"fmt"
 	"net/http"
+	"strconv"
 	"time"
 
 	"github.com/GajanSoorian/parallax-invoicing/invoice-service/repository/models"
@@ -15,21 +15,20 @@ import (
 func GetInvoiceById(db *sql.DB) gin.HandlerFunc {
 
 	return func(c *gin.Context) {
-		id := c.Param("invoiceNumber")
-
-		fmt.Println("Calling FetchRows for id ", id)
+		id, err := strconv.ParseInt(c.Param("invoiceNumber"), 10, 64)
+		if err != nil {
+			c.AbortWithStatus(http.StatusBadRequest)
+		}
 		/*rows, err := repository.FindInvoice(db)
 		if err != nil {
 			log.Println(err)
 		}
-		fmt.Println(rows)
 		for rows.Next() {
 			fmt.Println(rows)
 			err := rows.Scan(&id, &name, &email, &createdOn, &updatedOn)
 			if err != nil {
 				log.Fatal(err)
 			}
-			fmt.Println(id, name, email, createdOn, updatedOn)
 		}
 		err = rows.Err()
 		if err != nil {
@@ -39,10 +38,9 @@ func GetInvoiceById(db *sql.DB) gin.HandlerFunc {
 		in.CustomerName = "god"
 		in.Email = "god@god.com"
 		in.DueDate = time.Now()
-		in.InvoiceNumber = 12345
+		in.InvoiceNumber = id
 		in.Products = []models.Item{{"pen", "good pen", 12.3}, {"pencil", "good Pencil", 10}}
 		in.TotalAmount = 22
-		fmt.Println("sending to front end: ", in)
 		c.IndentedJSON(http.StatusOK, in)
 	}
 }

@@ -12,37 +12,63 @@ A web app that allows creating, updating, and displaying invoices.
 
 "v1" denotes the api version.
 
+## Install Go
+
+### option 1
+
+Download go package from : https://go.dev/dl/
+Go versions are backward compatible so install the version that matches your OS version and architecture.
+For older Mac, archived version of Go installers can be found in `archived version` drop down in the same link.
+
+This project was built with go 1.16.15. To install the same version use one of the below links:
+for Darwin amd64 (x86-64 arch): X86 https://go.dev/dl/go1.16.15.darwin-amd64.pkg
+for Darwin arm64 (ARM64 arch): https://go.dev/dl/go1.16.15.darwin-arm64.pkg
+Follow the instuction to install Go. Once complete, if `go version` does not does not recognize go as a command- add `export PATH="/usr/local/go/bin:$PATH"` to ~/.bashrc or ~/.bash_profile to ensure `go` command works.
+
+### option 2
+
+Go can also be installed using homebrew:
+https://jimkang.medium.com/install-go-on-mac-with-homebrew-5fa421fc55f5
+
+Steps to set up Go workspace are not required to build and run this application and can be ignored.
+
+Once installed, running  `go version` should display a version number.
+
 ## Commands to run invoice-service application
 
-Navigate to the folder "parallax-invoicing" , which contains the "makefile". Then run on the below commands:
+Navigate to the folder "parallax-invoicing" , which contains the "makefile". This is a wrapper for Go build and run commands. Then run on the below commands:
 
     `make deps` : fetch all dependent libraries.
 
     `make test` : Run all unit tests.
 
     `make run`  : Build and run the application.  
-    
-    `make all`  : Do all the above actions in sequence.
 
-Environment variables(host IP, port, DB info) needed for the service are stored in invoice-service/invoice-service.env
+Environment variables(host IP, port, DB info) needed for the service are stored in invoice-service/invoice-service.env. 
+An online database has been setup for this proejct in https://bit.io/GajanSoorian/invoice_db.
+
+On sucessful launch, the following command prompt will be displayed:
+`[GIN-debug] Listening and serving HTTP on :3000`
 
 ## Commands to start angular web application
 
 Navigate to the `invoice-webapp` folder and run the below commands:
 
-- npm install  : To install dependencies.
+- npm install    : To install dependencies.
 - npm run build  : Build the project.
-- npm run start -o  : Run the application.
+- npm run test   : Run the test cases
+- npm run start  : Run the application.
 
-Note: This has not been tested in newer/older angular versions.
+Use any browser to open: http://localhost:4200/
+Note: This project works with Angular 14. It has not been tested in other angular versions.
 
-complete ng versions: Angular CLI: 14.2.4 , Node: 14.20.1 ,Package Manager: npm 8.19.2
+Complete ng versions: Angular CLI: 14.2.4 , Node: 14.20.1 ,Package Manager: npm 8.19.2
 
 ## Corner of hope (did not get to these)
 
 - Integration test cases with mocked Database.
-- Angular test cases for frontend.
-- Separate endpoint for Modify (PATCH)
+- More frontend test cases.
+- Better error handling and error propagation.
 - Separate routes for different views for manageable code.
 - JWT authorization for rest endpoints.
 - Dockerize everything
@@ -50,21 +76,20 @@ complete ng versions: Angular CLI: 14.2.4 , Node: 14.20.1 ,Package Manager: npm 
         - display customer purchasing pattern to predict future order timelines.
         - upcoming payments
         - Identify dip/increase in order requests for items.
-- Use interfaces to make Database queries and operations independent Database type.
+- Decouple DB operations with the type of Database present.
 - Pagination.
 
 ## Out of scope
 
 - Login and authentication.
 - API security (Token based authentication and TLS setup).
-- Timeouts(api request/ db query), rate limiting and retry strategies.
+- Timeouts, rate limiting and retry strategies.
 - Logger functionality.
 - Alternate API endpoints- gRPC
 - Test suites to better manager similar test cases.
 - Integration test cases.
 - Support for different unit of cost and conversions.
 - Tax logic for items.
-- Incremental "vertical slice" commits for easy review and faster feedback.
   
 ## Tech stack
 

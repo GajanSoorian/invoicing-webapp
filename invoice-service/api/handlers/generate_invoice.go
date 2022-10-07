@@ -11,13 +11,11 @@ import (
 
 // handler for endpoint: invoice-create
 func CreateInvoice(db *sql.DB, invoice *models.Invoice) gin.HandlerFunc {
-	fmt.Println("We're here!! ")
 	return func(c *gin.Context) {
 		if err := c.Bind(invoice); err != nil {
 			fmt.Println("Error binding", err)
 		}
 		fmt.Println("Invoice created", invoice)
-		fmt.Println(" details are:", invoice.CustomerName, invoice.Email)
 		c.JSON(http.StatusOK, populateInvoice(db)) //subPopulate(invoice)) //
 
 	}
