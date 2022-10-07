@@ -33,11 +33,11 @@ describe('InvoiceFormComponent', () => {
     createButtonDebugElement = fixture.debugElement.query(By.css('.create-button'));
   });
 
-  fit('should create InvoiceFormComponent', () => {
+  it('should create InvoiceFormComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  fit('should create new empty invoice object when create is clicked', () => {
+  it('should create new empty invoice object when create is clicked', () => {
     createButtonDebugElement.triggerEventHandler('click');
     expect(component.invoice).toBeTruthy();
     expect(component.invoice.products.length).toEqual(1);

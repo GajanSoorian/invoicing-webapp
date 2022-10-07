@@ -41,7 +41,6 @@ func GetEnvVariables(fileName string) (*Config, error) {
 
 	err := godotenv.Load(fileName)
 	if err != nil {
-		fmt.Println("Error loading occurred. Err:", err)
 		return nil, err
 	}
 	env := NewConfig()

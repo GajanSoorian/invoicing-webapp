@@ -8,7 +8,6 @@ all: deps test build run
 
 # Fetch and install all backend dependencies.
 deps:
-	go get github.com/DATA-DOG/go-sqlmock@v1.5.0
 	go get github.com/gin-gonic/gin@v1.7.7
 	go get github.com/google/uuid@v1.3.0
 	go get github.com/joho/godotenv@v1.4.0

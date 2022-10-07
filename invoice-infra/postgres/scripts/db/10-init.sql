@@ -1,9 +1,23 @@
-CREATE USER invoice_user WITH PASSWORD '123';
+CREATE USER invoice_user WITH PASSWORD 'secure_password';
 CREATE DATABASE invoice_db OWNER invoice_user;
+
 CREATE TABLE IF NOT EXISTS invoices (
-	id UUID PRIMARY KEY,
-	customer_name VARCHAR ( 50 ) NOT NULL,
-	customer_email VARCHAR ( 50 ) UNIQUE NOT NULL,
-	created_on TIMESTAMP,
-    updated_on TIMESTAMP 
+	invoice_id UUID PRIMARY KEY,
+	invoice_number BIGINT,
+	customer_name VARCHAR ( 50 ),
+	customer_email VARCHAR ( 60 ),
+	due_by TIMESTAMP,
+	total_amount NUMERIC
+);
+
+CREATE TABLE IF NOT EXISTS items (
+	item_id UUID,
+	item_name VARCHAR ( 50 ),
+	description VARCHAR ( 200 ),
+	price NUMERIC,
+	PRIMARY KEY(item_id),
+	invoice_id UUID,
+	 CONSTRAINT fk_invoice
+      FOREIGN KEY(invoice_id) 
+	  REFERENCES invoices(invoice_id)
 );

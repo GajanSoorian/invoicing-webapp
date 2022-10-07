@@ -1,7 +1,6 @@
 package repository
 
 import (
-	"fmt"
 	"testing"
 
 	"github.com/GajanSoorian/parallax-invoicing/invoice-service/internal/config"
@@ -18,7 +17,7 @@ func getDefaultEnv() *config.Config {
 func TestDefaultDevDbSetup(t *testing.T) {
 	db, err := SetupDbConnection(getDefaultEnv())
 	assert.Nil(t, err)
-	assert.Nil(t, checkDbConnection(db))
+	assert.Nil(t, CheckDbConnection(db))
 }
 
 // Test behavior when DB driver is not supported.
@@ -33,5 +32,4 @@ func TestSetupDatabaseDriverNotSupported(t *testing.T) {
 func TestSetupDatabaseFailedToConnect(t *testing.T) {
 	_, err := SetupDbConnection(&config.Config{})
 	assert.NotNil(t, err)
-	fmt.Println(err)
 }

@@ -1,55 +1,41 @@
 package handlers
 
 import (
-	"database/sql"
+	"fmt"
 	"net/http"
 	"strconv"
-	"time"
 
+	"github.com/GajanSoorian/parallax-invoicing/invoice-service/internal/config"
+	"github.com/GajanSoorian/parallax-invoicing/invoice-service/repository"
 	"github.com/GajanSoorian/parallax-invoicing/invoice-service/repository/models"
+	"github.com/GajanSoorian/parallax-invoicing/invoice-service/service"
 	"github.com/gin-gonic/gin"
 )
 
-// Handler for endpoint invoice-display
-
-func GetInvoiceById(db *sql.DB) gin.HandlerFunc {
-
+// Handler for endpoint invoice/view/:id
+func GetInvoiceById(env *config.Config) gin.HandlerFunc {
 	return func(c *gin.Context) {
-		id, err := strconv.ParseInt(c.Param("invoiceNumber"), 10, 64)
+		db := repository.GetDbHandle(env)
+		invoiceNumber, err := strconv.ParseInt(c.Param("id"), 10, 64)
 		if err != nil {
+			fmt.Println("error with string to into: ", err)
 			c.AbortWithStatus(http.StatusBadRequest)
 		}
-		/*rows, err := repository.FindInvoice(db)
-		if err != nil {
-			log.Println(err)
+		in := service.FindInvoice(db, invoiceNumber)
+		if in == nil {
+			c.IndentedJSON(http.StatusBadRequest, models.NewInvoice())
 		}
-		for rows.Next() {
-			fmt.Println(rows)
-			err := rows.Scan(&id, &name, &email, &createdOn, &updatedOn)
-			if err != nil {
-				log.Fatal(err)
-			}
-		}
-		err = rows.Err()
-		if err != nil {
-			log.Fatal(err)
-		} */
-		in := models.NewInvoice()
-		in.CustomerName = "god"
-		in.Email = "god@god.com"
-		in.DueDate = time.Now()
-		in.InvoiceNumber = id
-		in.Products = []models.Item{{"pen", "good pen", 12.3}, {"pencil", "good Pencil", 10}}
-		in.TotalAmount = 22
+		fmt.Println("invoice returned :", in)
 		c.IndentedJSON(http.StatusOK, in)
 	}
 }
 
+// Handler for testing endpoint connection.
 func PingGet() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		c.JSON(http.StatusOK, map[string]string{
-			"name":  "Gajan",
-			"email": "My@gmail.com",
+			"name":  "testingConnection",
+			"email": "tester@test.com",
 		})
 	}
 }

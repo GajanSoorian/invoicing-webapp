@@ -12,7 +12,6 @@ import (
 // Test the error handling for wrong file name or path.
 func TestWrongFileNameOrPath(t *testing.T) {
 	config, err := GetEnvVariables("WrongFile.env")
-
 	assert.Nil(t, config)
 	assert.NotNil(t, err)
 }
