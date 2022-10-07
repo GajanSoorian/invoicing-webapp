@@ -1,16 +1,14 @@
-import { Component, OnInit, NgModule } from '@angular/core';
+import { Observable, Subscription } from 'rxjs';
+import { Component } from '@angular/core';
 import { InvoicingService } from '../service/invoicing.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import {FormGroup} from '@angular/forms';
-import { Observable, throwError } from 'rxjs';
-import { catchError } from 'rxjs/operators';
 
 @Component({
   selector: 'app-invoice-form',
   templateUrl: './invoice-form.component.html',
   styleUrls: ['./invoice-form.component.less']
 })
-export class InvoiceFormComponent implements OnInit {
+export class InvoiceFormComponent {
 
   customerName: string = ''
   email: string = ''
@@ -20,16 +18,14 @@ export class InvoiceFormComponent implements OnInit {
   dueDate: Date = new Date()
   isViewModifyMode = false
   isCreateMode = false;
-  invoiceNumberToFetch: number =0
+  invoiceNumberToFetch: number = 0
 
   invoice = new Invoice();
+
   constructor(
     private _invoicingService: InvoicingService,
     private _snackBar: MatSnackBar
   ) { }
-
-  ngOnInit(): void {
-  }
 
   // Add line items to the invoice using the '+' button.
   addProduct() {
@@ -38,32 +34,28 @@ export class InvoiceFormComponent implements OnInit {
       description: this.description,
       price: this.price
     }) ;
-    this.invoice.totalAmount = (this.invoice.products.reduce((n, {price}) => n + price!, 0))
   }
 
-  // Remove line items from the invoice with the '-' button.
+  // Remove line items from the invoice using the '-' button.
   removeProduct() {
     this.invoice.products.pop();
+
     this.invoice.totalAmount = (this.invoice.products.reduce((n, {price}) => n + price!, 0))
   }
 
+  // Call
   onSubmitClick(): void {
-    this.invoice.customerName = this.customerName
-    this.invoice.email = this.email
-    this.invoice.dueByDate = this.dueDate
-    this.invoice.invoiceNumber
-    console.log("Need to sed this to the back end : ",this.invoice.dueByDate ,  this.invoice.customerName,
-    this.invoice.email, this.invoice.invoiceNumber, this.invoice.products);
     this._invoicingService.addInvoice(this.invoice)
     let message = `Invoice with number ${this.invoice.invoiceNumber} created successfully`
     this.popupMessage(message, "Ok")
-    //Todo : reset the form and component.
   }
 
   onCreateClick(): void {
+    this.invoice = new Invoice();
     this.invoice.invoiceNumber = (new Date).getTime()
     this.isCreateMode =true
     this.isViewModifyMode =false
+
     if( this.invoice.products.length == 0){
     this.invoice.products.push({
       name:"",
@@ -71,17 +63,26 @@ export class InvoiceFormComponent implements OnInit {
       price: 0})
     this.invoice.totalAmount =0
     }
+
   }
-  onViewClick(): void {
+
+  onProductPriceUpdate(): void {
+    this.invoice.totalAmount = (this.invoice.products.reduce((n, {price}) => n + price!, 0))
+  }
+
+  onViewModifyClick(): void {
     this.isViewModifyMode =true
-    this.invoice.invoiceNumber = 0
-}
+    this.isCreateMode =false
+    this.invoice = new Invoice();
+  }
 
   onSearchClick(): void {
+    this.isCreateMode =true
+    this.isViewModifyMode =false
     this.invoiceNumberToFetch = this.invoice.invoiceNumber!
-    console.log("Invoice to fetch", this.invoiceNumberToFetch)
+    console.log("This is invoice being sent to the backend",this.invoice.invoiceNumber);
+
     this._invoicingService.getInvoice(this.invoiceNumberToFetch).subscribe (data => {
-      console.log(data);
       this.invoice = data;
     })
   }
@@ -89,7 +90,6 @@ export class InvoiceFormComponent implements OnInit {
   popupMessage(message: string, action: string) {
     this._snackBar.open(message, action);
   }
-
 
   handleError(err: any) {
     this._snackBar.open(`Action Failed.`, 'Ok', { panelClass: 'warn' });

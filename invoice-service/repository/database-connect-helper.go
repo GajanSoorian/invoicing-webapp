@@ -24,10 +24,8 @@ func checkDbConnection(db *sql.DB) error {
 	return db.Ping()
 }
 
-//Todo 
-func FetchRows(db *sql.DB) (*sql.Rows, error) {
-	rows, err := db.Query("SELECT * from invoices where id = 1")
-	fmt.Println("This is what we got !!!!")
+func FindInvoice(db *sql.DB, InvoiceNumber int64) (*sql.Rows, error) {
+	rows, err := db.Query("SELECT * from invoices where id = ?", InvoiceNumber)
 	fmt.Println(rows)
 	if err != nil {
 		log.Fatal(err)
@@ -35,12 +33,18 @@ func FetchRows(db *sql.DB) (*sql.Rows, error) {
 	return rows, err
 }
 
-// Util function to build DB connection string based on config parameters. 
+/*
+func SaveInvoice(db *sql.DB, invoice models.Invoice) (uuid.UUID, err) {
+	rows, err := db.Query("INSERT  from invoices where id = ?", InvoiceNumber)
+}
+*/
+
+// Util function to build DB connection string based on config parameters.
 func BuildDbConnectionParam(env *config.Config) string {
 	if env == nil {
 		fmt.Println("env Config is nil, returning empty string")
 		return ""
 	}
 	return fmt.Sprintf("host=%s port=%s user=%s password=%s dbname=%s connect_timeout=%d sslmode=%s",
-		env.RepoHost, env.RepoPort, env.RepoUsername, env.RepoPassword, env.RepoName, env.RepoTimeout, env.SslStatus)
+		env.RepoHost, env.RepoPort, env.RepoUsername, env.RepoPassword, env.RepoName, env.RepoTimeout, env.SslMode)
 }

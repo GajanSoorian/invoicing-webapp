@@ -1,33 +1,30 @@
-import { Injectable } from '@angular/core';
+import { Injectable, OnDestroy } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, throwError } from 'rxjs';
-import { catchError, retry, map } from 'rxjs/operators';
+import { Observable, Subscription } from 'rxjs';
 import { Invoice } from '../invoice-form/invoice-form.component';
-import { Location, DatePipe } from '@angular/common';
 
 
 @Injectable({
   providedIn: 'root'
 })
-export class InvoicingService {
-  invoice: Invoice
-  constructor(private location: Location, private http: HttpClient) {
+export class InvoicingService implements OnDestroy{
+
+  invoice: Invoice;
+
+  constructor(private _httpClient: HttpClient) {
     this.invoice = new Invoice();
   }
+  ngOnDestroy(): void {
+    throw new Error('Method not implemented.');
+  }
 
-  // Implements HTTP POST to create or update invoice that is displayed.
+  // Implements HTTP POST to create a new or update an existing invoice.
   addInvoice(invoice: Invoice) {
-    console.log('addInvoice', invoice);
-    this.http.post('/v1/invoice/save', invoice).subscribe(result => {
-      console.log('this is the result: ', result.toString());
-    })
-    console.log('this is what were sending: ', JSON.stringify(invoice));
+    this._httpClient.post('/v1/invoice/save', invoice).subscribe(result => {  })
   }
 
   // Implements HTTP GET to fetch invoice by invoice number.
   getInvoice(invoiceNumber: number): Observable<Invoice> {
-    invoiceNumber = 12345
-    console.log('fetchInvoice', invoiceNumber);
-    return this.http.get<Invoice>(`/v1/invoice/view/${invoiceNumber}`);
+    return this._httpClient.get<Invoice>(`/v1/invoice/view/${invoiceNumber}`);
   }
 }

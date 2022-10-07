@@ -22,8 +22,10 @@ type Config struct {
 	RepoName     string // Database name.
 	RepoUsername string // DB username.
 	RepoPassword string // DB password.
+	SslMode      string // SSL status can be enabled or disabled.
 
-	SslStatus string // SSL status can be enabled or disabled.
+	TestDb    string // DB Env flag for choosing DB server.
+	TestDbCon string // DB connection for test env.
 }
 
 // Returns Config object
@@ -53,7 +55,7 @@ func GetEnvVariables(fileName string) (*Config, error) {
 	env.RepoUsername = os.Getenv("DB_USER")
 	env.RepoPassword = os.Getenv("DB_PASS")
 	env.RepoName = os.Getenv("DB_NAME")
-	env.SslStatus = os.Getenv("SSL")
+	env.SslMode = os.Getenv("SSL")
 	env.RepoDriver = os.Getenv("DB_DRIVER")
 
 	env.RepoTimeout, err = strconv.Atoi(os.Getenv("DB_TIMEOUT"))
@@ -62,22 +64,27 @@ func GetEnvVariables(fileName string) (*Config, error) {
 		env.RepoTimeout = DEFAULT_TIMEOUT
 	}
 
+	env.TestDb = os.Getenv("TEST_DB")
+	env.TestDbCon = os.Getenv("TEST_DB_CON")
+
 	return env, nil
 }
 
-// Returns obj with default config for all env variables. 
+// Returns obj with default config for all env variables.
 func NewDefaultConfig() *Config {
 	return &Config{
-        ApiVersion:  "v1",
-        ServiceIp:   "127.0.0.1",
-        ServicePort: "8082",
-		RepoHost:    "127.0.0.1",
-		RepoPort:    "8082",
+		ApiVersion:   "v1",
+		ServiceIp:    "127.0.0.1",
+		ServicePort:  "3000",
+		RepoHost:     "db.bit.io",
+		RepoPort:     "5432",
 		RepoTimeout:  DEFAULT_TIMEOUT,
-		RepoDriver:    "Postgres",
-		RepoName: 		"invoice_db",
-        RepoUsername: "dbuser",
-		RepoPassword: "dbpass",
-        SslStatus:    "disable",
+		RepoDriver:   "postgres",
+		RepoName:     "GajanSoorian/invoice_db",
+		RepoUsername: "GajanSoorian",
+		RepoPassword: "v2_3udqt_WawXZtQTZ3rqyvCuKJ7SnZ9",
+		SslMode:      "require",
+		TestDb:       "enabled",
+		TestDbCon:    "",
 	}
 }

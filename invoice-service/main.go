@@ -31,6 +31,9 @@ func main() {
 
 	// Creates a gin router - gin is a micro-framework for RESTful
 	router := gin.Default()
+
+	// Todo : Remove DB object from the here and save it in the DB
+
 	api := router.Group(env.ApiVersion)
 	{
 		api.GET("/invoice/ping", handlers.PingGet())

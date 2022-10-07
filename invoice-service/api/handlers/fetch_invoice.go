@@ -15,10 +15,10 @@ import (
 func GetInvoiceById(db *sql.DB) gin.HandlerFunc {
 
 	return func(c *gin.Context) {
-		id := c.Param("id")
+		id := c.Param("invoiceNumber")
 
 		fmt.Println("Calling FetchRows for id ", id)
-		/*rows, err := repository.FetchRows(db)
+		/*rows, err := repository.FindInvoice(db)
 		if err != nil {
 			log.Println(err)
 		}
@@ -42,7 +42,7 @@ func GetInvoiceById(db *sql.DB) gin.HandlerFunc {
 		in.InvoiceNumber = 12345
 		in.Products = []models.Item{{"pen", "good pen", 12.3}, {"pencil", "good Pencil", 10}}
 		in.TotalAmount = 22
-
+		fmt.Println("sending to front end: ", in)
 		c.IndentedJSON(http.StatusOK, in)
 	}
 }

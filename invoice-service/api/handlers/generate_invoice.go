@@ -17,16 +17,11 @@ func CreateInvoice(db *sql.DB, invoice *models.Invoice) gin.HandlerFunc {
 			fmt.Println("Error binding", err)
 		}
 		fmt.Println("Invoice created", invoice)
-		//fmt.Println(" details are:", invoice.CustomerName, invoice.CustomerEmail)
+		fmt.Println(" details are:", invoice.CustomerName, invoice.Email)
 		c.JSON(http.StatusOK, populateInvoice(db)) //subPopulate(invoice)) //
 
 	}
 
-}
-func subPopulate(invoice *models.Invoice) *models.Invoice {
-	invoice.InvoiceNumber = 1
-	fmt.Println("Invoice created")
-	return invoice
 }
 
 func populateInvoice(db *sql.DB) *models.Invoice {

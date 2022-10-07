@@ -43,6 +43,7 @@ complete ng versions: Angular CLI: 14.2.4 , Node: 14.20.1 ,Package Manager: npm 
 - Integration test cases with mocked Database.
 - Angular test cases for frontend.
 - Separate endpoint for Modify (PATCH)
+- Separate routes for different views for manageable code.
 - JWT authorization for rest endpoints.
 - Dockerize everything
 - Create an analytics dashboard page as the login page to:

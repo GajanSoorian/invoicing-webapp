@@ -10,8 +10,8 @@
   </div>
 </footer>
 
-<button mat-raised-button class="landing-page-buttons" color="primary" (click)="onCreateClick(); invoiceForm.reset()">Create Invoice</button>
-<button mat-raised-button class="landing-page-buttons" color="primary" (click)="onViewClick(); invoiceForm.reset()">View/Modify Invoice</button>
+<button class="create-button" mat-raised-button class="landing-page-buttons" color="primary" (click)="onCreateClick(); invoiceForm.reset()">Create Invoice</button>
+<button mat-raised-button class="landing-page-buttons" color="primary" (click)="onViewModifyClick(); invoiceForm.reset()">View/Modify Invoice</button>
 
 <form class="invoice-form" #invoiceForm="ngForm">
 
@@ -72,7 +72,7 @@
                 <mat-label>Amount</mat-label>
                 <input matInput type="number" class="amount-right-align" placeholder="0" name="price{{i}}" id="price" name ="price"
                   [ngClass]="{'is-invalid': invoiceForm.submitted && ProductPrice.invalid}" [(ngModel)]="product.price"
-                  #ProductPrice="ngModel" required>
+                  #ProductPrice="ngModel" required (change)="onProductPriceUpdate()">
                 <span matPrefix> USDC  </span>
               </mat-form-field>
             </td>

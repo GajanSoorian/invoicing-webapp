@@ -2,7 +2,6 @@ package repository
 
 import (
 	"fmt"
-	"strconv"
 	"testing"
 
 	"github.com/GajanSoorian/parallax-invoicing/invoice-service/internal/config"
@@ -14,28 +13,25 @@ func getDefaultEnv() *config.Config {
 	return config.NewDefaultConfig()
 }
 
+// Checks if Default DB connection is successful. If this fails, check NewDefaultConfig which stores development
+// DB setup information.
+func TestDefaultDevDbSetup(t *testing.T) {
+	db, err := SetupDbConnection(getDefaultEnv())
+	assert.Nil(t, err)
+	assert.Nil(t, checkDbConnection(db))
+}
+
 // Test behavior when DB driver is not supported.
 func TestSetupDatabaseDriverNotSupported(t *testing.T) {
-	_, err := SetupDbConnection(getDefaultEnv())
-	assert.NotNil(t, err)
-	fmt.Println(err)
+	wrongEnv := getDefaultEnv()
+	wrongEnv.RepoDriver = "wrongDriver"
+	_, err := SetupDbConnection(wrongEnv)
+	assert.ErrorContains(t, err, "sql: unknown driver")
 }
 
-// Test behavior when DB connect failed due to failed Ping test
+// Test behavior when DB connect failed unsupported Environment file format.
 func TestSetupDatabaseFailedToConnect(t *testing.T) {
-	_, err := SetupDbConnection(getDefaultEnv())
+	_, err := SetupDbConnection(&config.Config{})
 	assert.NotNil(t, err)
 	fmt.Println(err)
-}
-
-// Test building DB connection parameters based on environment variables.
-func TestBuildDbConnectionParam(t *testing.T) {
-
-	DbConnectionString := BuildDbConnectionParam(nil)
-	// If Environment object if nil, returned connection string should be empty
-	assert.Equal(t, "", DbConnectionString)
-
-	DbConnectionString = BuildDbConnectionParam(getDefaultEnv())
-	// Check if returned string has connect_timeout set to the default value
-	assert.Contains(t, DbConnectionString, "connect_timeout="+strconv.Itoa(config.DEFAULT_TIMEOUT))
 }

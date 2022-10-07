@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { LandingPageComponent } from './landing-page/landing-page.component';
 import { InvoiceFormComponent } from './invoice-form/invoice-form.component';
 import { MatButtonModule} from '@angular/material/button';
 import { RouterModule } from '@angular/router';
@@ -16,7 +15,6 @@ import {MatSnackBarModule} from '@angular/material/snack-bar';
 
 @NgModule({
   declarations: [
-    LandingPageComponent,
     InvoiceFormComponent
   ],
   imports: [
@@ -33,11 +31,10 @@ import {MatSnackBarModule} from '@angular/material/snack-bar';
     MatRippleModule,
     MatIconModule,
     HttpClientModule,
-    MatSnackBarModule,
+    MatSnackBarModule
    ],
   exports: [
-    LandingPageComponent,
-    InvoiceFormComponent,
+    InvoiceFormComponent
   ]
 })
 export class InvoicingModule { }

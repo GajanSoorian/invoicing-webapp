@@ -2,21 +2,22 @@ package handlers
 
 import (
 	"database/sql"
-	"fmt"
 	"net/http"
 	"net/http/httptest"
 	"testing"
 
 	"github.com/gin-gonic/gin"
+	"github.com/go-playground/assert/v2"
 )
 
-func TestGetInvoiceById(t *testing.T) {
+//Todo : mock DB call
+/*func TestGetInvoiceById(t *testing.T) {
 	var db *sql.DB
 	invoiceRec := GetInvoiceById(db)
-	//assert.Equal(t, http.StatusOK, invoiceRec.)
-	fmt.Println("This is tested!!", invoiceRec)
+	assert.Equal(t, http.StatusOK, invoiceRec.)
 
 }
+*/
 
 // Helper function to create a router during testing
 func getRouter() *gin.Engine {
@@ -43,11 +44,11 @@ func testHTTPResponse(t *testing.T, r *gin.Engine, req *http.Request, f func(w *
 func TestShowIndexPageUnauthenticated(t *testing.T) {
 	router := getRouter()
 	var db *sql.DB
-	router.GET("/v1//invoice-display", GetInvoiceById(db))
+	router.GET("/v1/invoice/view/1235", GetInvoiceById(db))
 
 	// Create a request to send to the above route
-	req, _ := http.NewRequest("GET", "/v1//invoice-display", nil)
-
+	req, _ := http.NewRequest("GET", "/v1/invoice/view/12345", nil)
+	assert.Equal(t,http.StatusOK, req.Response.StatusCode)
 	testHTTPResponse(t, router, req, func(w *httptest.ResponseRecorder) bool {
 		// Test that the http status code is 200
 		statusOK := w.Code == http.StatusOK
