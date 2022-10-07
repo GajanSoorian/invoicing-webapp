@@ -1,7 +1,6 @@
 package handlers
 
 import (
-	"fmt"
 	"net/http"
 	"strconv"
 
@@ -18,14 +17,12 @@ func GetInvoiceById(env *config.Config) gin.HandlerFunc {
 		db := repository.GetDbHandle(env)
 		invoiceNumber, err := strconv.ParseInt(c.Param("id"), 10, 64)
 		if err != nil {
-			fmt.Println("error with string to into: ", err)
 			c.AbortWithStatus(http.StatusBadRequest)
 		}
 		in := service.FindInvoice(db, invoiceNumber)
 		if in == nil {
 			c.IndentedJSON(http.StatusBadRequest, models.NewInvoice())
 		}
-		fmt.Println("invoice returned :", in)
 		c.IndentedJSON(http.StatusOK, in)
 	}
 }

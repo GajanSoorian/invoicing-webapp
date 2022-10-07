@@ -2,6 +2,7 @@ import { Observable, Subscription } from 'rxjs';
 import { Component } from '@angular/core';
 import { InvoicingService } from '../service/invoicing.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import * as _ from 'lodash';
 
 @Component({
   selector: 'app-invoice-form',
@@ -39,15 +40,32 @@ export class InvoiceFormComponent {
   // Remove line items from the invoice using the '-' button.
   removeProduct() {
     this.invoice.products.pop();
-
     this.invoice.totalAmount = (this.invoice.products.reduce((n, {price}) => n + price!, 0))
   }
 
-  // Call
+  // Send request to the service to create or update an invoice.
   onSubmitClick(): void {
-    this._invoicingService.addInvoice(this.invoice)
-    let message = `Invoice with number ${this.invoice.invoiceNumber} created successfully`
-    this.popupMessage(message, "Ok")
+    let message = '';
+    let messageType ='info';
+    if(this.canSubmitInvoice()) {
+      this._invoicingService.addInvoice(this.invoice)
+      message = `Invoice with number ${this.invoice.invoiceNumber} created successfully`
+    } else {
+      message = `Please add required details and products to create an invoice`
+      messageType = 'warn'
+    }
+
+    this.popupMessage(message, "Ok" , messageType)
+  }
+
+  private canSubmitInvoice(): boolean {
+    return !_.isNil(this.invoice.customerName)
+    && this.invoice.customerName!.length > 0
+    && !_.isNil(this.invoice.email)
+    && this.invoice.email!.length > 0
+    && this.invoice.products.length > 0
+    && !_.isNil(this.invoice.products[0].name)
+    && this.invoice.products[0].name!.length > 0
   }
 
   onCreateClick(): void {
@@ -83,13 +101,8 @@ export class InvoiceFormComponent {
     })
   }
 
-  popupMessage(message: string, action: string) {
-    this._snackBar.open(message, action);
-  }
-
-  handleError(err: any) {
-    this._snackBar.open(`Action Failed.`, 'Ok', { panelClass: 'warn' });
-    return new Error(err);
+  popupMessage(message: string, action: string, msgType: string) {
+    this._snackBar.open(message, action, { panelClass: msgType });
   }
 
 }

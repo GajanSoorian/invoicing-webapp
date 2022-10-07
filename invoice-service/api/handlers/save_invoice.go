@@ -17,7 +17,6 @@ func SaveInvoice(env *config.Config) gin.HandlerFunc {
 		db := repository.GetDbHandle(env)
 		invoice := &models.Invoice{}
 		if err := c.Bind(invoice); err != nil {
-			fmt.Println("Error binding", err)
 		}
 		resultInvoice, saveErr := service.SaveInvoice(db, invoice)
 		if saveErr != nil {
