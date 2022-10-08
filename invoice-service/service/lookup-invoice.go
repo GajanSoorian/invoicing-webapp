@@ -16,11 +16,9 @@ func FindInvoice(db *sql.DB, invoiceNumber int64) *models.Invoice {
 	err := row.Scan(&invoice.Id, &invoice.InvoiceNumber, &invoice.CustomerName, &invoice.Email, &invoice.DueDate, &invoice.TotalAmount)
 	switch err {
 	case sql.ErrNoRows:
-		fmt.Println("No invoice found for InvoiceNumber: ", invoiceNumber)
 		return nil
 	case nil:
 		invoice.Products, _ = findItems(invoice.Id, db)
-		fmt.Println("Found:", invoice)
 	default:
 		fmt.Println(err)
 	}
@@ -42,13 +40,15 @@ func findItems(invoiceId uuid.UUID, db *sql.DB) ([]models.Item, error) {
 		if err := rows.Scan(&item.Id, &item.Name, &item.Description, &item.Price, &item.InvoiceId); err != nil {
 			return items, err
 		}
-		fmt.Println("found item", item.Name)
 		items = append(items, *item)
 	}
 	if err = rows.Err(); err != nil {
-		fmt.Println("Error!", err)
 		return items, err
 	}
-	fmt.Println("Items are ", items)
 	return items, nil
 }
+/*
+func GetInvoiceId( invoiceNumber int64, db *sql.DB) (uuid.UUID, bool){
+	found := false
+
+}*/

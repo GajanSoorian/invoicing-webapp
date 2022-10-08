@@ -80,6 +80,34 @@ Note: This project was built using Angular 14.
 
 Complete versions used: Angular CLI: 14.2.4 , Node: 14.20.1 ,Package Manager: npm 8.19.2
 
+## Database
+
+Two empty tables required for this application are already created in <https://bit.io/GajanSoorian/invoice_db>.
+Table creation query:
+
+CREATE TABLE IF NOT EXISTS invoices (
+	invoice_id UUID PRIMARY KEY,
+	invoice_number BIGINT,
+	customer_name VARCHAR ( 50 ),
+	customer_email VARCHAR ( 60 ),
+	due_by TIMESTAMP,
+	total_amount NUMERIC
+);
+
+CREATE TABLE IF NOT EXISTS items (
+	item_id UUID,
+	item_name VARCHAR ( 50 ),
+	description VARCHAR ( 200 ),
+	price NUMERIC,
+	PRIMARY KEY(item_id),
+	invoice_id UUID,
+	 CONSTRAINT fk_invoice
+      FOREIGN KEY(invoice_id) 
+	  REFERENCES invoices(invoice_id)
+);
+
+Invite with admin rights for this DB has been sent to `alex@parallax.to`
+
 ## Corner of hope (did not get to these)
 
 - Integration test cases with mocked Database.
