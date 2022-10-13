@@ -1,4 +1,4 @@
-# Parallax Invoicing Web Application
+# Invoicing Web Application
 
 A web app that allows creating, updating, and displaying invoices.
 
@@ -11,33 +11,6 @@ A web app that allows creating, updating, and displaying invoices.
 | Display | GET    /v1/invoice/view/{id}    |
 
 "v1" is the api version.
-
-## Install Go
-
-### Option 1
-
-Download go package from : <https://go.dev/dl/>
-`Go` versions are backward compatible so please install any version that matches your OS version and architecture. That being said, newer version installation might not work on older OS( Go version 1.16.15 would be a safe choice).
-For older OSes, archived version of `Go` installers can be found in `archived version` drop down in the same link.
-
-This project was built using Go 1.16.15. To install the same version use one of the below links:
-
-For Darwin amd64 (x86-64 arch): <https://go.dev/dl/go1.16.15.darwin-amd64.pkg>
-
-For Darwin arm64 (ARM64 arch): <https://go.dev/dl/go1.16.15.darwin-arm64.pkg>
-
-Follow the on screen instruction to install `Go`. Once complete, if `go version` does not recognize `go` as a command- add `export PATH="/usr/local/go/bin:$PATH"` to ~/.bashrc or ~/.bash_profile to ensure the `go` command works. Restart terminal or `source ~/.bashrc` or `source ~/.bash_profile` before trying again.
-
-### Option 2
-
-`Go` can also be installed using homebrew(see article below).
-Note: Steps to set up `Go` workspace are not required to build and run this application and can be ignored.
-
-<https://jimkang.medium.com/install-go-on-mac-with-homebrew-5fa421fc55f5>
-
-Once installed, running  `go version` should display a version number.
-
-This application was tested on a Mac using option 1, please let me know if you have any difficulties and I'd be happy to help!
 
 ## Commands to build and run invoice-service application
 
@@ -55,12 +28,6 @@ Any SQL DB should work as long the env file is updated with connection informati
 
 On successful launch of the invoice-service Go application, the following command prompt will be displayed:
 `[GIN-debug] Listening and serving HTTP on :3000`
-
-## More information about Go applications
-
-- Packages help  organize related Go source files together into a single unit, making them modular, reusable, and maintainable.
-- Methods that start with a capital letter are services offered by a package (Similar to public methods in OOP languages). Likewise, entities that start with a small letters are private to the package.
-- Units tests are part of the same packages, placed in the folder and "_test" suffix at the end.
 
 ## Commands to start angular web application
 
